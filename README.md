@@ -1,8 +1,9 @@
 # async-ex
 
-Error handling with clojure async can be a little hairy. Prior to Clojure 1.6.0, exceptions thrown in `go` or `thread` blocks that weren't caught in the block were simply dropped. Since Clojure 1.6.0, exceptions not caught in the block are printed to stderr. To resolve this, you either need to wrap every async block in try/catch or set a DefaultExceptionHandler or use the method suggested by David Nolan. I've found that all of these solutions leave something to be desired and that is why I created this library.
+Error handling with clojure async can be a little hairy. Prior to Clojure 1.6.0, exceptions thrown in `go` or `thread` blocks that weren't caught in the block were simply dropped. Since Clojure 1.6.0, exceptions not caught in the block are printed to stderr. To resolve this, you either need to wrap every async block in try/catch or set a [DefaultUncaughtExceptionHandler](http://docs.oracle.com/javase/1.5.0/docs/api/java/lang/Thread.UncaughtExceptionHandler.html) or use the [method](http://martintrojer.github.io/clojure/2014/03/09/working-with-coreasync-exceptions-in-go-blocks/) suggested by David Nolen and explained by Martin Trojer. I've found that all of these solutions leave something to be desired and that is why I created this library.
 
-The library is simple, yet powerful. At it's core is a concept called an exception chan (`ex-chan`). You provide it an exception handler and optionally a channel and it returns a channel. The exception channel is constantly passing anything put onto it to your exception handler. Then to put this exception chan to work, async-ex provides it's own version of both `go` and `thread`, `go-ex` and `thread-ex`. You pass either a single ex-chan or a collection of ex-chans and then the body you want executed. If no exceptions occur, `go-ex` and `thread-ex` perform exactly the same as `go` and thread`. However, in the event of an exception, the exception is put onto all the ex-chans you provided. 
+
+The library is simple, yet powerful. At it's core is a concept called an exception chan (`ex-chan`). You provide it an exception handler and optionally a channel and it returns a channel. The exception channel is constantly passing anything put onto it to your exception handler. Then to put this exception chan to work, async-ex provides it's own version of both `go` and `thread`, `go-ex` and `thread-ex`. You pass either a single ex-chan or a collection of ex-chans and then the body you want executed. If no exceptions occur, `go-ex` and `thread-ex` perform exactly the same as `go` and `thread`. However, in the event of an exception, the exception is put onto all the ex-chans you provided. 
 
 Here is a simple example:
 
@@ -17,7 +18,7 @@ Here is a simple example:
 
 ```
 
-The reason to use async-ex is to separate your normal logic from your exception handling logic. You'll notice that in the example above, although it is clear where an exception will be handled, it doesn't clutter normal logic. Additionally, you can modularize your exception handling logic by having different ex-chans. 
+The reason to use async-ex is to separate your normal logic from your exception handling logic. Additionally, you can modularize your exception handling logic by having different ex-chans. 
 
 ## Usage
 
@@ -35,7 +36,7 @@ Hello world usage:
    (throw (Exception. "Hello World!")))
 ```
 
-Modularize your exception logic by having different exception channels. Then supply go-ex blocks with a assortments of those exception channels.
+Modularize your exception logic by having different exception channels. Then supply go-ex blocks with an assortments of those exception channels.
 
 ```Clojure
 
