@@ -1,6 +1,6 @@
 (defproject async-ex "0.1.0-SNAPSHOT"
-  :description "FIXME: write description"
-  :url "http://example.com/FIXME"
+  :description "Transparent, modular error handling for clojure async"
+  :url "https://github.com/wyegelwel/async-ex"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.6.0"]
