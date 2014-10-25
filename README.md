@@ -1,5 +1,9 @@
 # async-ex
 
+After much thought, I've decided this is a terrible way to handle exceptions with async. I've written a post about better ways to [handle exceptions in async](http://wyegelwel.github.io/Error-Handling-with-Clojure-Async/). However, I'm leaving this code up for the sake of cataloging bad ideas. 
+
+### Previous README
+
 Error handling with clojure async can be a little hairy. Prior to Clojure 1.6.0, exceptions thrown in `go` or `thread` blocks that weren't caught in the block were simply dropped. Since Clojure 1.6.0, exceptions not caught in the block are printed to stderr. To resolve this, you either need to wrap every async block in try/catch or set a [DefaultUncaughtExceptionHandler](http://docs.oracle.com/javase/1.5.0/docs/api/java/lang/Thread.UncaughtExceptionHandler.html) or use the [method](http://martintrojer.github.io/clojure/2014/03/09/working-with-coreasync-exceptions-in-go-blocks/) suggested by David Nolen and explained by Martin Trojer. I've found that all of these solutions leave something to be desired and that is why I created this library.
 
 
